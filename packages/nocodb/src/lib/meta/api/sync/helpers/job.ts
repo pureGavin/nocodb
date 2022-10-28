@@ -2176,7 +2176,7 @@ export default async (
 
     logBasic('Importing Tables...');
     // prepare table schema (base)
-    await nocoCreateBaseSchema(aTblSchema);
+    const tables = await nocoCreateBaseSchema(aTblSchema);
     logDetailed('Table creation completed');
 
     logDetailed('Configuring Links');
@@ -2235,9 +2235,9 @@ export default async (
 
         const recordsMap = {};
 
-        for (let i = 0; i < ncTblList.list.length; i++) {
+        for await (const table of ncTblList.list.filter((ncTbl) => tables.find((table) => table.title === ncTbl.title))) {
           const _perfStart = recordPerfStart();
-          const ncTbl = await api.dbTable.read(ncTblList.list[i].id);
+          const ncTbl = await api.dbTable.read(table.id);
           recordPerfStats(_perfStart, 'dbTable.read');
 
           // not a migrated table, skip
@@ -2263,8 +2263,8 @@ export default async (
         }
 
         logBasic('Configuring Record Links...');
-        for (let i = 0; i < ncTblList.list.length; i++) {
-          const ncTbl = await api.dbTable.read(ncTblList.list[i].id);
+        for await (const table of ncTblList.list.filter((ncTbl) => tables.find((table) => table.title === ncTbl.title))) {
+          const ncTbl = await api.dbTable.read(table.id);
           rtc.data.nestedLinks += await importLTARData({
             table: ncTbl,
             projectName: syncDB.projectName,
