@@ -92,7 +92,7 @@ useSelectedCellKeyupListener(inject(ActiveCellInj, ref(false)), (e: KeyboardEven
     :allow-clear="!readOnly"
     :input-read-only="true"
     :open="readOnly ? false : open"
-    :popup-class-name="`${randomClass} nc-picker-time`"
+    :popup-class-name="`${randomClass} nc-picker-time ${open ? 'active' : ''}`"
     @click="open = !open"
     @ok="open = !open"
   >

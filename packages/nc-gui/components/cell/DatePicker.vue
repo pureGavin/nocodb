@@ -80,7 +80,7 @@ useSelectedCellKeyupListener(inject(ActiveCellInj, ref(false)), (e: KeyboardEven
     :placeholder="placeholder"
     :allow-clear="!readOnly"
     :input-read-only="true"
-    :dropdown-class-name="`${randomClass} nc-picker-date`"
+    :dropdown-class-name="`${randomClass} nc-picker-date  ${open ? 'active' : ''}`"
     :open="readOnly ? false : open"
     @click="open = !open"
   >
