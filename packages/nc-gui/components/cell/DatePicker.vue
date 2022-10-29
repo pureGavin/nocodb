@@ -14,6 +14,8 @@ const columnMeta = inject(ColumnInj, null)!
 
 const readOnly = inject(ReadonlyInj, ref(false))
 
+const active = inject(ActiveCellInj, ref(false))
+
 let isDateInvalid = $ref(false)
 
 const dateFormat = $computed(() => columnMeta?.value?.meta?.date_format ?? 'YYYY-MM-DD')
@@ -57,7 +59,7 @@ watch(
 
 const placeholder = computed(() => (isDateInvalid ? 'Invalid date' : ''))
 
-useSelectedCellKeyupListener(inject(ActiveCellInj, ref(false)), (e: KeyboardEvent) => {
+useSelectedCellKeyupListener(active, (e: KeyboardEvent) => {
   switch (e.key) {
     case 'Enter':
       e.stopPropagation()
@@ -81,8 +83,8 @@ useSelectedCellKeyupListener(inject(ActiveCellInj, ref(false)), (e: KeyboardEven
     :allow-clear="!readOnly"
     :input-read-only="true"
     :dropdown-class-name="`${randomClass} nc-picker-date  ${open ? 'active' : ''}`"
-    :open="readOnly ? false : open"
-    @click="open = !open"
+    :open="readOnly && !active ? false : open"
+    @click="open = active && !open"
   >
     <template #suffixIcon></template>
   </a-date-picker>
