@@ -16,7 +16,6 @@ import {
   useProject,
   watch,
 } from '#imports'
-import { useSelectedCellKeyupListener } from '~/composables/useSelectedCellKeyupListener'
 import MdiCloseCircle from '~icons/mdi/close-circle'
 
 interface Props {
@@ -73,13 +72,13 @@ const selectedTitles = computed(() =>
     ? typeof modelValue === 'string'
       ? isMysql
         ? modelValue.split(',').sort((a, b) => {
-          const opa = options.value.find((el) => el.title === a)
-          const opb = options.value.find((el) => el.title === b)
-          if (opa && opb) {
-            return opa.order! - opb.order!
-          }
-          return 0
-        })
+            const opa = options.value.find((el) => el.title === a)
+            const opb = options.value.find((el) => el.title === b)
+            if (opa && opb) {
+              return opa.order! - opb.order!
+            }
+            return 0
+          })
         : modelValue.split(',')
       : modelValue
     : [],
@@ -99,7 +98,6 @@ const handleKeys = (e: KeyboardEvent) => {
       isOpen.value = true
       e.stopPropagation()
       break
-
   }
 }
 
